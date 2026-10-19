@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home Assistant Automation Builder – generate automation YAML online</title>
+<meta name="description" content="Build Home Assistant automations with simple forms: pick triggers, conditions and actions, start from ready-made examples, and copy clean automation YAML. Paste existing YAML to edit it.">
+<link rel="canonical" href="https://uselesssite.nl/ha-automation-builder/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="uselesssite.nl">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://uselesssite.nl/ha-automation-builder/">
+<meta property="og:title" content="Home Assistant Automation Builder – generate automation YAML online">
+<meta property="og:description" content="Build Home Assistant automations with simple forms: pick triggers, conditions and actions, start from ready-made examples, and copy clean automation YAML. Paste existing YAML to edit it.">
+<meta property="og:image" content="https://uselesssite.nl/ha-automation-builder/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Home Assistant Automation Builder – generate automation YAML online">
+<meta name="twitter:description" content="Build Home Assistant automations with simple forms: pick triggers, conditions and actions, start from ready-made examples, and copy clean automation YAML. Paste existing YAML to edit it.">
+<meta name="twitter:image" content="https://uselesssite.nl/ha-automation-builder/og.png">
+<meta name="theme-color" content="#039be5">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "HA Automation Builder", "url": "https://uselesssite.nl/ha-automation-builder/", "description": "Build Home Assistant automations with simple forms: pick triggers, conditions and actions, start from ready-made examples, and copy clean automation YAML. Paste existing YAML to edit it.", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (web browser)", "browserRequirements": "Requires JavaScript", "inLanguage": "en", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "featureList": ["Triggers: state, time, sun, numeric value, zone, time pattern, Home Assistant start, event and webhook", "Conditions: state, time and weekdays, sun, numeric value, zone and template", "Actions: lights, switches, scenes, scripts, notifications, delays, wait, any action call with data", "Ready-made examples: lights at sunset, motion light, washing machine done, leave home, and more", "New syntax (2024.10+) or classic syntax for older versions", "Paste existing automation YAML to load and edit it; unknown parts are kept as raw YAML"], "image": "https://uselesssite.nl/ha-automation-builder/og.png", "author": {"@type": "Person", "name": "Rein033", "url": "https://github.com/Rein033"}, "license": "https://opensource.org/licenses/MIT", "codeRepository": "https://github.com/Rein033/ha-automation-builder"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "uselesssite.nl", "item": "https://uselesssite.nl/"}, {"@type": "ListItem", "position": 2, "name": "Tools", "item": "https://uselesssite.nl/tools/"}, {"@type": "ListItem", "position": 3, "name": "HA Automation Builder", "item": "https://uselesssite.nl/ha-automation-builder/"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I add the YAML to Home Assistant?", "acceptedAnswer": {"@type": "Answer", "text": "Go to Settings → Automations & scenes → Create automation, open the ⋮ menu, choose Edit in YAML, paste the YAML and save. You can switch back to the visual editor any time."}}, {"@type": "Question", "name": "What is the difference between the new and classic syntax?", "acceptedAnswer": {"@type": "Answer", "text": "Since Home Assistant 2024.10 automations use triggers:, conditions: and actions: with trigger: and action: keys. Older versions use trigger:, platform: and service:. The builder can output both."}}, {"@type": "Question", "name": "Can I edit an automation I already have?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Click Paste YAML and paste your automation. Known triggers, conditions and actions become forms; anything else is kept as raw YAML so nothing gets lost."}}, {"@type": "Question", "name": "What does the mode setting do?", "acceptedAnswer": {"@type": "Answer", "text": "It decides what happens when the automation is triggered while it is still running: single ignores the new run, restart starts over (great for motion lights), queued waits its turn and parallel runs both."}}]}</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='7' fill='%2303a9f4'/%3E%3Crect x='9' y='10' width='14' height='3' rx='1.5' fill='%23fff'/%3E%3Crect x='9' y='15' width='10' height='3' rx='1.5' fill='%23fff' opacity='.7'/%3E%3Crect x='9' y='20' width='12' height='3' rx='1.5' fill='%23fff' opacity='.5'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+<link rel="stylesheet" href="base.css?v=2">
+<link rel="stylesheet" href="style.css?v=2">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+<script defer src="https://analytics.uselesssite.nl/script.js" data-website-id="c8741679-5df2-4679-9527-39cc9edc25c0"></script>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./"><span class="logo"><i class="mdi mdi-robot-outline"></i></span>
+    <div><h1>HA Automation Builder</h1><small>Build Home Assistant automations, copy the YAML</small></div></a>
+  <nav>
+    <button type="button" class="ib" id="theme" title="Light / dark"><i class="mdi mdi-theme-light-dark"></i></button>
+    <a href="https://uselesssite.nl/tools/" class="ghost"><i class="mdi mdi-view-grid-outline"></i> <span>All tools</span></a>
+    <a href="https://github.com/Rein033/ha-automation-builder" class="ghost"><i class="mdi mdi-github"></i> <span>GitHub</span></a>
+    <a href="https://buymeacoffee.com/rein033" class="coffee" target="_blank" rel="noopener"><i class="mdi mdi-coffee"></i> <span>Coffee</span></a>
+  </nav>
+</header>
+
+<main>
+<div class="panel">
+  <div class="tile-head"><div class="tile-ic"><i class="mdi mdi-lightbulb-auto-outline"></i></div><div class="tile-txt"><b>Start from an example</b><small>Or build your own below</small></div></div>
+  <div class="vb" id="vb"></div>
+</div>
+<div class="cols">
+  <div>
+    <div class="panel">
+      <div class="tile-head"><div class="tile-ic"><i class="mdi mdi-card-text-outline"></i></div><div class="tile-txt"><b>Automation</b><small>Name and run mode</small></div></div>
+      <div class="form">
+        <div class="fld wide"><label>Name (alias)</label><input id="alias" placeholder="Lights on at sunset"></div>
+        <div class="fld wide"><label>Description <span>(optional)</span></label><input id="desc"></div>
+        <div class="fld"><label>Mode</label><select id="mode"><option value="single">single: ignore new runs</option><option value="restart">restart: start over</option><option value="queued">queued: run one by one</option><option value="parallel">parallel: run side by side</option></select></div>
+        <div class="fld"><label>Syntax</label><select id="syntax"><option value="new">New (2024.10 and later)</option><option value="old">Classic (before 2024.10)</option></select></div>
+      </div>
+    </div>
+    <div class="panel blok" data-sec="triggers"><div class="tile-head"><div class="tile-ic"><i class="mdi mdi-flash-outline"></i></div><div class="tile-txt"><b>When</b><small>Triggers: any one of these starts the automation</small></div></div>
+      <div class="items" id="triggers"></div><div class="addrow" data-add="triggers"></div></div>
+    <div class="panel blok" data-sec="conditions"><div class="tile-head"><div class="tile-ic"><i class="mdi mdi-filter-outline"></i></div><div class="tile-txt"><b>And if</b><small>Conditions: all of these must be true (optional)</small></div></div>
+      <div class="items" id="conditions"></div><div class="addrow" data-add="conditions"></div></div>
+    <div class="panel blok" data-sec="actions"><div class="tile-head"><div class="tile-ic"><i class="mdi mdi-play-outline"></i></div><div class="tile-txt"><b>Then do</b><small>Actions, run from top to bottom</small></div></div>
+      <div class="items" id="actions"></div><div class="addrow" data-add="actions"></div></div>
+  </div>
+  <div>
+    <div class="panel sticky">
+      <div class="tile-head"><div class="tile-ic" id="okic"><i class="mdi mdi-code-braces"></i></div><div class="tile-txt"><b>YAML</b><small id="samen"></small></div>
+        <div class="btns"><button type="button" class="small" id="plak"><i class="mdi mdi-import"></i> Paste YAML</button><button type="button" class="main" id="copy"><i class="mdi mdi-content-copy"></i> Copy</button></div></div>
+      <div id="plakbox" hidden><textarea id="plaktekst" class="code" rows="8" placeholder="alias: My automation&#10;triggers:&#10;  - trigger: state&#10;    entity_id: binary_sensor.motion"></textarea>
+        <div class="btns" style="margin:6px 0 10px"><span class="hint bad" id="plakfout" style="flex:1;margin:0"></span><button type="button" class="main" id="laad">Load</button></div></div>
+      <div id="warn" class="warnlist"></div>
+      <pre class="yaml" id="yaml"></pre>
+      <div class="btns" style="margin-top:10px;justify-content:space-between"><button type="button" class="small" id="nieuw"><i class="mdi mdi-restart"></i> Start over</button>
+        <div class="btns"><button type="button" class="small" id="deel"><i class="mdi mdi-link-variant"></i> Share</button><button type="button" class="small" id="dl"><i class="mdi mdi-download"></i> Download</button></div></div>
+      <details class="how"><summary>How do I add this to Home Assistant?</summary>
+        <ol><li>Go to <b>Settings → Automations &amp; scenes</b> and click <b>Create automation</b> → <b>Create new automation</b>.</li>
+          <li>Open the menu (⋮, top right) and choose <b>Edit in YAML</b>.</li>
+          <li>Replace everything with this YAML and click <b>Save</b>. You can switch back to the visual editor any time.</li>
+          <li>Replace the example entity IDs (like <code>light.living_room</code>) with your own. You find them in <b>Settings → Devices &amp; services → Entities</b>.</li></ol></details>
+    </div>
+  </div>
+</div>
+<datalist id="ents"></datalist>
+
+<section class="over">
+  <div class="panel">
+    <h2>What can HA Automation Builder do?</h2>
+    <p>Build Home Assistant automations with simple forms: pick triggers, conditions and actions, start from ready-made examples, and copy clean automation YAML. Paste existing YAML to edit it.</p>
+    <ul class="kenm"><li>Triggers: state, time, sun, numeric value, zone, time pattern, Home Assistant start, event and webhook</li><li>Conditions: state, time and weekdays, sun, numeric value, zone and template</li><li>Actions: lights, switches, scenes, scripts, notifications, delays, wait, any action call with data</li><li>Ready-made examples: lights at sunset, motion light, washing machine done, leave home, and more</li><li>New syntax (2024.10+) or classic syntax for older versions</li><li>Paste existing automation YAML to load and edit it; unknown parts are kept as raw YAML</li></ul>
+  </div>
+  <div class="panel"><h2>Frequently asked questions</h2><div class="faq"><details><summary>How do I add the YAML to Home Assistant?</summary><p>Go to Settings → Automations & scenes → Create automation, open the ⋮ menu, choose Edit in YAML, paste the YAML and save. You can switch back to the visual editor any time.</p></details><details><summary>What is the difference between the new and classic syntax?</summary><p>Since Home Assistant 2024.10 automations use triggers:, conditions: and actions: with trigger: and action: keys. Older versions use trigger:, platform: and service:. The builder can output both.</p></details><details><summary>Can I edit an automation I already have?</summary><p>Yes. Click Paste YAML and paste your automation. Known triggers, conditions and actions become forms; anything else is kept as raw YAML so nothing gets lost.</p></details><details><summary>What does the mode setting do?</summary><p>It decides what happens when the automation is triggered while it is still running: single ignores the new run, restart starts over (great for motion lights), queued waits its turn and parallel runs both.</p></details></div></div>
+  <div class="panel"><h2>More free tools</h2><div class="rels"><a class="rel" href="https://uselesssite.nl/esphome-config-builder/"><span class="tile-ic"><i class="mdi mdi-chip"></i></span><span><b>ESPHome Config Builder</b><small>Pick a board and sensors, get the YAML</small></span></a><a class="rel" href="https://uselesssite.nl/ha-card-generator/"><span class="tile-ic"><i class="mdi mdi-view-dashboard-edit-outline"></i></span><span><b>HA Card Generator</b><small>Build Home Assistant cards, copy the YAML</small></span></a><a class="rel" href="https://uselesssite.nl/ha-theme-generator/"><span class="tile-ic"><i class="mdi mdi-palette-swatch-variant"></i></span><span><b>HA Theme Generator</b><small>Design a Home Assistant theme, copy the YAML</small></span></a><a class="rel" href="https://uselesssite.nl/mdi-icon-search/"><span class="tile-ic"><i class="mdi mdi-magnify-scan"></i></span><span><b>MDI Icon Search</b><small>Find an icon, copy mdi:name</small></span></a><a class="rel" href="https://uselesssite.nl/universal-3d-cards/"><span class="tile-ic"><i class="mdi mdi-printer-3d-nozzle"></i></span><span><b>Universal 3D Cards</b><small>One 3D printer card for Home Assistant</small></span></a><a class="rel" href="https://uselesssite.nl/cv-generator/"><span class="tile-ic"><i class="mdi mdi-file-account-outline"></i></span><span><b>CV Generator</b><small>Modern cv maken en als PDF opslaan</small></span></a></div>
+    <p class="hint"><a href="https://uselesssite.nl/tools/">See all tools →</a></p></div>
+</section>
+
+</main>
+
+<footer>
+  Free and open source · Made by <a href="https://github.com/Rein033">Rein033</a> · Everything runs in your browser, nothing is sent anywhere ·
+  <a href="https://uselesssite.nl/tools/">More tools</a> · Not affiliated with Home Assistant, ESPHome or the Open Home Foundation
+</footer>
+<script src="base.js?v=2"></script>
+<script src="app.js?v=2"></script>
+</body>
+</html>

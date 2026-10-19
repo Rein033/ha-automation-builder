@@ -1,0 +1,21 @@
+.sticky { position: sticky; top: 80px; } @media (max-width: 900px) { .sticky { position: static; } }
+.vb { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.vb button { border: 1px solid var(--line); background: var(--field); border-radius: 12px; padding: 10px 12px; cursor: pointer; text-align: left; display: flex; gap: 10px; align-items: center; }
+.vb button:hover { border-color: var(--accent); } .vb i { font-size: 22px; color: var(--accent); } .vb b { display: block; font-size: .9rem; } .vb small { color: var(--muted); font-size: .78rem; }
+.items { display: grid; gap: 8px; }
+.it { border: 1px solid var(--line); background: var(--field); border-radius: 12px; padding: 10px 10px 12px; }
+.it-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.it-head i.ti { font-size: 20px; color: var(--accent); }
+.it-head select { flex: 1; font-weight: 600; background: var(--panel) !important; }
+.it .form input, .it .form select, .it .form textarea { background: var(--panel) !important; }
+.it .hint { margin: 6px 0 0; }
+.addrow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.addrow button { border: 1px dashed var(--line); background: none; border-radius: 999px; padding: 5px 11px; cursor: pointer; font-size: .84rem; color: var(--accent); font-weight: 600; display: inline-flex; gap: 5px; align-items: center; }
+.addrow button:hover { border-color: var(--accent); border-style: solid; }
+.dagen { display: flex; gap: 4px; flex-wrap: wrap; } .dagen label { cursor: pointer; } .dagen input { display: none; }
+.dagen span { display: inline-block; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); font-size: .82rem; }
+.dagen input:checked + span { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--panel)); font-weight: 600; }
+.yaml { background: #1e1f24; color: #e6e6ea; border-radius: 12px; padding: 12px 14px; overflow: auto; max-height: 58vh; font: .8rem/1.5 var(--mono); margin: 0; white-space: pre; }
+.yaml .c { color: #8a8f98; } .yaml .k { color: #82aaff; } .yaml .s { color: #c3e88d; }
+.warnlist { display: grid; gap: 6px; margin-bottom: 10px; } .warnlist div { font-size: .85rem; padding: 7px 10px; border-radius: 10px; background: color-mix(in srgb, var(--warn) 14%, transparent); }
+.how { margin-top: 12px; color: var(--muted); font-size: .9rem; } .how summary { cursor: pointer; font-weight: 600; color: var(--fg); } .how li { margin: 6px 0; }
